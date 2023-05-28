@@ -113,7 +113,7 @@ def setTarget(target):
 
     time.sleep(0.1)
     
-def msg(msg):
+def msg(msg, time = 500):
     root = tk.Tk()
     root.overrideredirect(True)
     root.geometry("800x55+560+915")
@@ -122,5 +122,5 @@ def msg(msg):
     root.resizable(False, False)
     label = tk.Label(root, text=msg, font=("Arial", 28), justify="center")
     label.pack()
-    root.after(500, lambda: root.destroy())
+    root.after(time, lambda: root.destroy())
     root.mainloop()

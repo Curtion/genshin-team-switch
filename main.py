@@ -1,8 +1,12 @@
 
+import threading
 import time
 from utils.mod import *
 import keyboard
 import pyautogui
+import pystray
+from PIL import Image
+from pystray import MenuItem
 
 def on_hotkey(key):
     on_hotkey_run(key)
@@ -51,7 +55,23 @@ def on_hotkey_run(key):
     time.sleep(1)
     msg("成功切换至队伍:{}".format(target))
 
-for i in range(10):
-    keyboard.add_hotkey('alt+' + str(i), on_hotkey, args=(i,))
+def listener():
+    for i in range(10):
+        keyboard.add_hotkey('alt+' + str(i), on_hotkey, args=(i,))
+    keyboard.wait()
 
-keyboard.wait()
+t = threading.Thread(target=listener)
+t.daemon = True
+t.start()
+
+def on_exit(icon, item):
+    icon.stop()
+
+def on_about(icon, item):
+    msg("Alt+数字键切换队伍", time=3000)
+
+menu = (MenuItem('帮助', action=on_about),MenuItem('退出', action=on_exit))
+icon = os.path.join(os.path.dirname(__file__), './icon/right.png')
+image = Image.open(icon)
+icon = pystray.Icon("name", image, "原神队伍切换工具", menu)
+icon.run()
