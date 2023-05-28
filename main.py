@@ -24,7 +24,12 @@ def on_hotkey_run(key):
         return
 
     genshin = genshins[0]
-    genshin.activate()
+    try:
+        genshin.activate()
+    except:
+        genshin.minimize()
+        genshin.maximize()
+        genshin.restore()
     time.sleep(0.5)
     
     if checkGenshinTeam() == False:
